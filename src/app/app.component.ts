@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { Router } from "@angular/router";
+import { AppointmentService } from "./appointment.service";
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'Dancing With Death';
+  selectedDate: string;
+
+  constructor(
+    private router: Router
+  ) { }
+
+  setDate(input) : void {
+    this.selectedDate = input;
+    this.router.navigate(['/calendar', this.selectedDate.toString()]);
+  }
 }

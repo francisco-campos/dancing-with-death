@@ -1,3 +1,11 @@
 <h1>
-  {{title}}
+  <a href="/">{{title}}</a>
 </h1>
+<p>
+  Welcome, you can book an hour to dance with the devil. Please select a date to see its availability.
+</p>
+<br>
+<label>Select a date:</label>
+<input [(ngModel)]="myDate" (ngModelChange)="setDate($event)" ngui-datetime-picker date-only="true" />
+
+<router-outlet></router-outlet>
