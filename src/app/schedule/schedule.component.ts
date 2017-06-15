@@ -1,32 +1,39 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Location } from "@angular/common";
+import { Router } from "@angular/router";
+
 import { Appointment } from "../appointment";
+import { AppointmentOut } from "./appointment-out";
 import { AppointmentService } from "../appointment.service";
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.css']
+  styleUrls: ['./schedule.component.css'],
+  providers: [AppointmentService]
 })
 export class ScheduleComponent implements OnInit {
-  @Input() appointment: Appointment
+  @Input() appointment: Appointment;
+  model: Appointment;
+  submitted: boolean = false;
 
   constructor(
     private appointmentService: AppointmentService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) { }
 
   ngOnInit() {
-
+    this.model = this.appointment
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/home'])
   }
 
-  save(): void {
-    this.appointmentService.update(this.appointment)
-    .then(() => this.goBack());
+  onSubmit() {
+    this.appointmentService.create(this.model)
+    this.submitted = true
   }
 
 }

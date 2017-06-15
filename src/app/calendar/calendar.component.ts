@@ -1,7 +1,7 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Appointment } from "../appointment";
 import { AppointmentService } from "../appointment.service";
-import { ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 
 @Component({
   selector: 'app-calendar',
@@ -10,29 +10,26 @@ import { ActivatedRoute, Params } from "@angular/router";
   providers: [AppointmentService]
 })
 export class CalendarComponent implements OnInit {
-  message: string
-  appointments: Appointment[]
-  selectedAppointment: Appointment
-  selectedDate: string
+  message: string;
+  appointments: Appointment[];
+  selectedAppointment: Appointment;
+  selectedDate: string;
 
   constructor(
     private appointmentService: AppointmentService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
-  ngOnInit() {
-    this.route.params.switchMap((params: Params) =>
-      this.selectedDate = params['date']
-    )
-    .subscribe();
-
-    this.appointmentService.getAppointments(this.selectedDate)
-      .then(appointments => this.appointments = appointments);
-
+  ngOnInit(): void {
+    this.route.params
+    .switchMap((params: Params) => this.getAppointments(params['date']))
+    .subscribe(appointments => this.appointments = appointments);
   }
 
-  ngOnChanges() {
-    console.log('change!')
+  getAppointments(date) {
+    this.selectedDate = date;
+    return this.appointmentService.getAppointments(date);
   }
 
   onSelect(appointment: Appointment) {

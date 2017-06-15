@@ -1,25 +1,74 @@
 <div *ngIf="appointment" class="text-left">
-  <form class="form-schedule" role="form">
-    <div class="form-group">
-      <label for="date">Date: {{appointment.date}}</label>
-    </div>
-    <div class="form-group">
-      <label for="date">Time start: {{appointment.time_start}}</label>
-    </div>
-    <div class="form-group">
-      <label for="date">Time end: {{appointment.time_end}}</label>
-    </div>
+  <div [hidden]="submitted">
+    <form #appointmentForm="ngForm" (ngSubmit)="onSubmit()" class="form-schedule" role="form">
+      <h2>Book an hour</h2>
+      <div class="form-group">
+        <label for="date">Date: {{appointment.date}}</label> /
+        <label for="date">Time: {{appointment.time_start}} - {{appointment.time_end}}</label>
+        <input type="hidden" name="date" id="date"
+                [(ngModel)]="model.date" value="{{model.date}}">
+        <input type="hidden" name="time_start" id="time_start"
+                [(ngModel)]="model.time_start" value="{{model.time_start}}">
+        <input type="hidden" name="time_end" id="time_end"
+                [(ngModel)]="model.time_end" value="{{model.time_end}}">
 
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" id="name">
-    </div>
+      </div>
+      <div class="form-group">
 
-    <div class="form-group">
-      <label for="ejemplo_email_2">Email</label>
-      <input type="email" class="form-control" id="ejemplo_email_2">
-    </div>
+      </div>
 
-    <button (click)="save()" type="button" class="btn btn-default">Schedule Time</button>
-  </form>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" maxlength="30"
+          required
+          [(ngModel)]="model.name" name="name"
+          #name="ngModel">
+          <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+            Name is required
+          </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" maxlength="50"
+          required
+          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+          [(ngModel)]="model.email" name="email"
+          #email="ngModel">
+
+          <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+            <div  *ngIf="email.errors && email.errors.required">
+                Email is required
+            </div>
+            <div  *ngIf="email.errors && email.errors.pattern">
+                Email is invalid
+            </div>
+          </div>
+      </div>
+
+      <button type="submit" class="btn btn-success"
+      [disabled]="!appointmentForm.form.valid">Schedule Time</button>
+    </form>
+  </div>
+  <div [hidden]="!submitted" class="form-schedule">
+    <h2>Thank you very much.</h2>
+    <p>Your time is reserved with the following data:</p>
+    <div class="row">
+      <div class="col-xs-3">Date:</div>
+      <div class="col-xs-9  pull-left">{{ model.date }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Time:</div>
+      <div class="col-xs-9  pull-left">{{ model.time_start }} - {{ model.time_end }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Name:</div>
+      <div class="col-xs-9  pull-left">{{ model.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Email:</div>
+      <div class="col-xs-9  pull-left">{{ model.email }}</div>
+    </div>
+    <button class="btn btn-primary" (click)="goBack()">Close</button>
+  </div>
 </div>

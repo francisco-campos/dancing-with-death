@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { CalendarComponent } from './calendar/calendar.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HomeComponent } from "./home/home.component";
 
 const appRoutes: Routes = [
   {
@@ -10,12 +11,12 @@ const appRoutes: Routes = [
     component: CalendarComponent
   },
   {
-    path: 'schedule',
-    component: ScheduleComponent
+    path: 'home',
+    component: HomeComponent
   },
   {
     path: '',
-    redirectTo: '/calendar',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
   { path: '**', component: PageNotFoundComponent}
