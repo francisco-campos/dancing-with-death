@@ -6,6 +6,6 @@
 </p>
 <br>
 <label>Select a date:</label>
-<input [(ngModel)]="myDate" (ngModelChange)="setDate($event)" ngui-datetime-picker date-only="true" />
+<input [(ngModel)]="selectedDate" (ngModelChange)="setDate($event)" ngui-datetime-picker date-only="true" />
 
 <router-outlet></router-outlet>

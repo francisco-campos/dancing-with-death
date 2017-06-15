@@ -47,14 +47,6 @@ export class AppointmentService {
       .catch(this.handleError);
   }
 
-  update(appointment: Appointment): Promise<Appointment> {
-    return Promise.resolve(appointment);
-  }
-
-  delete(appointment: Appointment) : Promise<Appointment> {
-    return Promise.resolve(appointment);
-  }
-
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only
     return Promise.reject(error.message || error);
