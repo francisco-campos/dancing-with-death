@@ -10,10 +10,11 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
   providers: [AppointmentService]
 })
 export class CalendarComponent implements OnInit {
-  message: string;
   appointments: Appointment[];
   selectedAppointment: Appointment;
   selectedDate: string;
+  isValid: boolean = false;
+  message: string;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -28,8 +29,21 @@ export class CalendarComponent implements OnInit {
   }
 
   getAppointments(date) {
-    this.selectedDate = date;
-    return this.appointmentService.getAppointments(date);
+    let newDate = new Date(date);
+    let currentDate = new Date();
+    let day = newDate.getDay();
+
+    if(day >= 5) {
+      this.isValid = false;
+      this.selectedDate = null;
+      this.message = "Sorry, the devil only takes care of Monday through Friday from 9:00 a.m. to 6:00 p.m.";
+      return [];
+    }
+    else {
+      this.isValid = true;
+      this.selectedDate = date;
+      return this.appointmentService.getAppointments(date);
+    }
   }
 
   onSelect(appointment: Appointment) {
